@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include "frequencyParser.h"
+#include <chrono>
 
 const size_t availableKeysCount = 3;
 
 int main(int argc, char *argv[]) {
+    auto start = std::chrono::high_resolution_clock::now();
     try {
         if (argc == availableKeysCount) {
             std::string inputFile = argv[1];
@@ -19,6 +21,9 @@ int main(int argc, char *argv[]) {
             outputStream.open(outputFile, std::fstream::out);
 
             freq::saveSortedDictionary(map, outputStream);
+
+            auto end = std::chrono::high_resolution_clock::now();
+            std::cout << "Time from start: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds" << std::endl;
             return 0;
         } else {
             std::cout << "wrong command line keys" << std::endl;
