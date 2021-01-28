@@ -10,12 +10,9 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
-#include <chrono>
-
 
 namespace freq {
     std::unordered_map<std::string, size_t> parse(std::istream &stream) {
-        auto start = std::chrono::high_resolution_clock::now();
         std::string const symbols{"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"};
         std::unordered_map<std::string, size_t> wordsCount;
         std::string word;
@@ -26,9 +23,6 @@ namespace freq {
         }
 
         std::string str(std::istreambuf_iterator<char>(stream), {});
-        auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "stream to string: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds" << std::endl;
-        start = std::chrono::high_resolution_clock::now();
         size_t beg, pos = 0;
         while ((beg = str.find_first_of(symbols, pos)) != std::string::npos) {
             pos = str.find_first_not_of(symbols, beg + 1);
@@ -43,8 +37,6 @@ namespace freq {
             wordsCount.insert_or_assign(word, count);
             word.clear();
         }
-        end = std::chrono::high_resolution_clock::now();
-        std::cout << "string to words: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds" << std::endl;
         return wordsCount;
     }
 
@@ -57,7 +49,6 @@ namespace freq {
     };
 
     void saveSortedDictionary(const std::unordered_map<std::string, size_t> &map, std::ostream &stream) {
-        auto start = std::chrono::high_resolution_clock::now();
         if (!stream.good()) {
             std::cout << "error occurred in output stream" << std::endl;
             return;
@@ -72,7 +63,5 @@ namespace freq {
         for (const auto &i : v) {
             stream << i.second << " " << i.first << std::endl;
         }
-        auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "words to stream: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds" << std::endl;
     }
 }
