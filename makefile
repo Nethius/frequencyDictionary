@@ -1,5 +1,5 @@
  freq: main.o frequencyParser.o
-	gcc -std=c++17 -Wall main.o frequencyParser.o -o freq
+	gcc -Wall main.o frequencyParser.o -o freq
 
  main.o: main.cpp
 	gcc -c main.cpp

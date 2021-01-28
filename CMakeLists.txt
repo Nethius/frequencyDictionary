@@ -7,4 +7,4 @@ project(freq)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(freq main.cpp "frequencyParser.cpp" "frequencyParser.h")
+add_executable(freq main.cpp "frequencyParser.h" "frequencyParser.cpp")

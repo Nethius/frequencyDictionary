@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <chrono>
+#include <cctype>
 
 namespace freq {
     std::unordered_map<std::string, size_t> parse(std::istream &stream) {
