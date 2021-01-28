@@ -1,11 +1,39 @@
- freq: main.o frequencyParser.o
-	gcc -Wall main.o frequencyParser.o -o freq
+CXX      := -c++
+CXXFLAGS := -g -std=c++17 -pedantic-errors -Wall -Wextra
+LDFLAGS  := -L/usr/lib -lstdc++ -lm
+BUILD    := ./build
+OBJ_DIR  := $(BUILD)/objects
+APP_DIR  := $(BUILD)/apps
+TARGET   := freq
+INCLUDE  := -ISource/
+SRC      :=                      		\
+	$(wildcard *.cpp)					\
 
- main.o: main.cpp
-	gcc -c main.cpp
+OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+DEPENDENCIES \
+		:= $(OBJECTS:.o=.d)
 
- frequencyParser.o: frequencyParser.cpp frequencyParser.h
-	gcc -c frequencyParser.cpp
+all: build $(APP_DIR)/$(TARGET)
 
- clean:
-	rm *.o freq
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -MMD -o $@
+
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
+
+-include $(DEPENDENCIES)
+
+.PHONY: all build clean
+
+build:
+	@mkdir -p $(APP_DIR)
+	@mkdir -p $(OBJ_DIR)
+
+release: CXXFLAGS += -O2
+release: all
+
+clean:
+	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -rvf $(APP_DIR)/*
