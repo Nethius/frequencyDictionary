@@ -3,10 +3,15 @@
 //
 
 #include "frequencyParser.h"
+#include <cctype>
+#include <unordered_map>
+#include <string>
+#include <vector>
+#include <fstream>
 #include <algorithm>
 #include <iostream>
 #include <chrono>
-#include <cctype>
+
 
 namespace freq {
     std::unordered_map<std::string, size_t> parse(std::istream &stream) {
